@@ -79,6 +79,7 @@ $thisPage = 'index';
 
     <div class="container mt-4 text-center">
         <h2 class="mb-5">Data Karyawan Perusahaan</h2>
+
         <?php if ($_SESSION["login"]["role"] == 'admin') : ?>
             <a href="tambah.php" class="btn btn-primary float-start my-4"><i class="fa-solid fa-plus"></i> Tambah Karyawan</a>
         <?php endif ?>

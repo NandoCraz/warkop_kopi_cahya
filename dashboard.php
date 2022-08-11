@@ -16,17 +16,10 @@ $karyawanPria = queryData("SELECT gender FROM karyawan WHERE gender = 'PRIA'");
 // cek tombol ditekan
 if (isset($_POST["ubah"])) {
     if (ubahProfile($_POST) > 0) {
-        echo "
-        <script>
-            alert('Foto berhasil diganti');
-            document.location.href = 'dashboard.php';
-        </script>";
+        $success = "Foto Berhasil Diganti!";
     } else {
-        echo "
-        <script>
-            alert('Foto gagal diganti');
-            document.location.href = 'dashboard.php';
-        </script>";
+        mysqli_error($conn);
+        $error = "Foto Gagal Diganti!";
     }
 }
 
@@ -102,7 +95,7 @@ $thisPage = 'dashboard';
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
                                     Data Seluruh Karyawan</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800"><?= count($karyawans); ?></div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800"><?= count($karyawans); ?> Orang</div>
                             </div>
                             <div class="col-auto">
                                 <i class="fa-solid fa-database fa-2x text-gray-300"></i>
@@ -118,7 +111,7 @@ $thisPage = 'dashboard';
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                     Karyawan Wanita</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800"><?= count($karyawanWanita) ?></div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800"><?= count($karyawanWanita) ?> Orang</div>
                             </div>
                             <div class="col-auto">
                                 <i class="fa-solid fa-child-dress fa-3x text-gray-300"></i>
@@ -134,7 +127,7 @@ $thisPage = 'dashboard';
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
                                     Karyawan Pria</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800"><?= count($karyawanPria) ?></div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800"><?= count($karyawanPria) ?> Orang</div>
                             </div>
                             <div class="col-auto">
                                 <i class="fa-solid fa-person fa-3x text-gray-300"></i>
@@ -150,7 +143,7 @@ $thisPage = 'dashboard';
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                     User</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800"><?= count($seluruhUser) ?></div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800"><?= count($seluruhUser) ?> Akun</div>
                             </div>
                             <div class="col-auto">
                                 <i class="fa-solid fa-users fa-2x text-gray-300"></i>
@@ -167,7 +160,7 @@ $thisPage = 'dashboard';
                                 <div class="col mr-2">
                                     <div class="text-xs font-weight-bold text-dark text-uppercase mb-1">
                                         Admin</div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800"><?= count($seluruhAdmin) ?></div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800"><?= count($seluruhAdmin) ?> Akun</div>
                                 </div>
                                 <div class="col-auto">
                                     <i class="fa-solid fa-user-gear fa-2x text-gray-300"></i>

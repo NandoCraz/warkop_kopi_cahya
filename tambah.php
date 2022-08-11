@@ -106,11 +106,16 @@ $thisPage = 'index';
             </div>
             <div class="mb-3">
                 <label class="form-label">Kelamin</label>
-                <select class="form-select" aria-label="Default select example" name="gender">
-                    <option disabled selected>PILIH KELAMIN</option>
-                    <option value="PRIA">PRIA</option>
-                    <option value="WANITA">WANITA</option>
-                </select>
+                <div class="row">
+                    <div class="col-sm-2">
+                        <input type="radio" name="gender" id="pria" value="PRIA" checked>
+                        <label for="pria">PRIA</label>
+                    </div>
+                    <div class="col-sm-2">
+                        <input type="radio" name="gender" id="wanita" value="WANITA">
+                        <label for="wanita">Wanita</label>
+                    </div>
+                </div>
             </div>
             <div class="mb-3">
                 <label for="alamat" class="form-label">Alamat</label>

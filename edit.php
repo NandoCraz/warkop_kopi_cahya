@@ -114,11 +114,27 @@ $thisPage = 'index';
             </div>
             <div class="mb-3">
                 <label class="form-label">Kelamin</label>
-                <select class="form-select" aria-label="Default select example" name="gender">
-                    <option selected value="<?= $karyawan['gender'] ?>"><?= $karyawan['gender'] ?></option>
-                    <option value="PRIA">PRIA</option>
-                    <option value="WANITA">WANITA</option>
-                </select>
+                <div class="row">
+                    <?php if ($karyawan['gender'] === 'PRIA') : ?>
+                        <div class="col-sm-2">
+                            <input type="radio" name="gender" id="pria" value="PRIA" checked>
+                            <label for="pria">PRIA</label>
+                        </div>
+                        <div class="col-sm-2">
+                            <input type="radio" name="gender" id="wanita" value="WANITA">
+                            <label for="wanita">Wanita</label>
+                        </div>
+                    <?php else : ?>
+                        <div class="col-sm-2">
+                            <input type="radio" name="gender" id="pria" value="PRIA">
+                            <label for="pria">PRIA</label>
+                        </div>
+                        <div class="col-sm-2">
+                            <input type="radio" name="gender" id="wanita" value="WANITA" checked>
+                            <label for="wanita">Wanita</label>
+                        </div>
+                    <?php endif ?>
+                </div>
             </div>
             <div class="mb-3">
                 <label for="alamat" class="form-label">Alamat</label>
