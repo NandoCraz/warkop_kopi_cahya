@@ -141,7 +141,6 @@ function update($data)
     return mysqli_affected_rows($conn);
 }
 
-
 // Function cari
 function cari($cari)
 {
