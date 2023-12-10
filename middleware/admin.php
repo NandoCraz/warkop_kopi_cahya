@@ -1,6 +1,6 @@
 <?php
 
 if ($_SESSION['login']['role'] === "user") {
-    header("location: dashboard.php");
+    header("location: ../index.php");
     exit;
 }

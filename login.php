@@ -17,7 +17,7 @@ if (isset($_COOKIE["rhisd"]) && isset($_COOKIE["key"])) {
 }
 
 if (isset($_SESSION["login"])) {
-    header("location: dashboard.php");
+    header("location: index.php");
     exit;
 }
 
@@ -43,7 +43,7 @@ if (isset($_POST['login'])) {
 
             // Set session
             $_SESSION["login"] = $row;
-            header("Location: dashboard.php");
+            header("Location: index.php");
             exit;
         }
     }
@@ -119,11 +119,6 @@ if (isset($_POST['login'])) {
                                     <button class="btn btn-outline-light btn-lg px-5" type="submit" name="login">Login</button>
                                 </form>
 
-                            </div>
-
-                            <div>
-                                <p class="mb-0">Belum mempunyai Akun? <a href="register.php" class="text-white-50 fw-bold">Register!</a>
-                                </p>
                             </div>
 
                         </div>

@@ -1,10 +1,12 @@
 <?php
 
+require_once __DIR__ . '/vendor/autoload.php';
+
 // koneksi ke database
 $host = 'localhost';
 $username = 'root';
 $password = '';
-$db = 'perusahaan';
+$db = 'warkop_cahya';
 $conn = mysqli_connect($host, $username, $password, $db);
 
 if ($conn->connect_error) {
@@ -23,31 +25,69 @@ function queryData($query)
     return $rows;
 }
 
-
-// Function tambah data
-function create($data)
+// ========== Pengeluaran ==========
+// Function tambah pengeluaran
+function createPengeluaran($data)
 {
     global $conn;
-    $nip = htmlspecialchars($data['nip']);
-    $nama = htmlspecialchars($data['nama']);
-    $gender = htmlspecialchars($data['gender']);
-    $alamat = htmlspecialchars($data['alamat']);
-    $tempat_lahir = htmlspecialchars($data['tempat_lahir']);
-    $tgl_lahir = htmlspecialchars($data['tgl_lahir']);
+    $keperluan = htmlspecialchars($data['keperluan']);
+    $tanggal_keluar = htmlspecialchars($data['tanggal_keluar']);
+    $jumlah_keluar = htmlspecialchars($data['jumlah_keluar']);
 
-    $foto = uploadFoto();
-    if (!$foto) {
-        return false;
-    }
-
-    $sql = "INSERT INTO karyawan VALUES('','$nip', '$nama', '$gender', '$alamat', '$tempat_lahir', '$tgl_lahir', '$foto')";
+    $sql = "INSERT INTO pengeluarans VALUES('','$keperluan', '$tanggal_keluar', '$jumlah_keluar')";
 
     mysqli_query($conn, $sql);
 
     return mysqli_affected_rows($conn);
 }
 
-// Function upload foto
+// Function update
+function updatePengeluaran($data)
+{
+    global $conn;
+    $id = $data['id'];
+    $keperluan = htmlspecialchars($data['keperluan']);
+    $tanggal_keluar = htmlspecialchars($data['tanggal_keluar']);
+    $jumlah_keluar = htmlspecialchars($data['jumlah_keluar']);
+
+    $sql = "UPDATE pengeluarans SET keperluan = '$keperluan', tanggal_keluar = '$tanggal_keluar', jumlah_keluar = '$jumlah_keluar' WHERE id = $id";
+
+    mysqli_query($conn, $sql);
+
+    return mysqli_affected_rows($conn);
+}
+
+// Function hapus
+function hapusPengeluaran($id)
+{
+    global $conn;
+    $sql = "DELETE FROM pengeluarans WHERE id = $id";
+    mysqli_query($conn, $sql);
+    return mysqli_affected_rows($conn);
+}
+
+
+// ========== List Menu ==========
+// Function tambah menu
+function createMenu($data)
+{
+    global $conn;
+    $nama_menu = htmlspecialchars($data['nama_menu']);
+    $harga = htmlspecialchars($data['harga']);
+    $kategori = htmlspecialchars($data['kategori']);
+
+    $foto = uploadFoto();
+    if (!$foto) {
+        return false;
+    }
+
+    $sql = "INSERT INTO menus VALUES('','$nama_menu', '$harga', '$kategori', '$foto')";
+
+    mysqli_query($conn, $sql);
+
+    return mysqli_affected_rows($conn);
+}
+
 function uploadFoto()
 {
     $namaFoto = $_FILES['foto']['name'];
@@ -90,187 +130,190 @@ function uploadFoto()
     $namaFotoBaru .= '.';
     $namaFotoBaru .= $ekstensiFoto;
 
-    move_uploaded_file($penyimpanan, 'image/' . $namaFotoBaru);
+    move_uploaded_file($penyimpanan, '../list_menu/' . $namaFotoBaru);
 
     return $namaFotoBaru;
 }
 
-// Function hapus
-function hapus($id)
-{
-    global $conn;
-    $sql = "DELETE FROM karyawan WHERE id = $id";
-    $sqlAll = "SELECT * FROM karyawan WHERE id = $id";
-    $delFoto = mysqli_query($conn, $sqlAll);
-    $execute = mysqli_fetch_assoc($delFoto);
-    unlink("image/" . $execute['foto']);
-    mysqli_query($conn, $sql);
-    return mysqli_affected_rows($conn);
-}
-
-
 // Function update
-function update($data)
+function updateMenu($data)
 {
     global $conn;
     $id = $data['id'];
-    $nip = htmlspecialchars($data['nip']);
-    $nama = htmlspecialchars($data['nama']);
-    $gender = htmlspecialchars($data['gender']);
-    $alamat = htmlspecialchars($data['alamat']);
-    $tempat_lahir = htmlspecialchars($data['tempat_lahir']);
-    $tgl_lahir = htmlspecialchars($data['tgl_lahir']);
-
+    $nama_menu = htmlspecialchars($data['nama_menu']);
+    $harga = htmlspecialchars($data['harga']);
+    $kategori = htmlspecialchars($data['kategori']);
     $fotoLama = htmlspecialchars($data['fotoLama']);
 
     // cek user pilih gambar baru
     if ($_FILES['foto']['error'] === 4) {
         $foto = $fotoLama;
     } else {
-        $sqlAll = "SELECT * FROM karyawan WHERE id = $id";
+        $sqlAll = "SELECT * FROM menus WHERE id = $id";
         $delFoto = mysqli_query($conn, $sqlAll);
         $execute = mysqli_fetch_assoc($delFoto);
-        unlink("image/" . $execute['foto']);
+        unlink("../list_menu/" . $execute['foto']);
         $foto = uploadFoto();
     }
 
-    $sql = "UPDATE karyawan SET nip = '$nip', nama = '$nama', gender = '$gender', alamat = '$alamat', tempat_lahir = '$tempat_lahir', tgl_lahir = '$tgl_lahir', foto = '$foto' WHERE id = $id";
+    $sql = "UPDATE menus SET nama_menu = '$nama_menu', harga = '$harga', kategori = '$kategori', foto = '$foto' WHERE id = $id";
 
     mysqli_query($conn, $sql);
 
     return mysqli_affected_rows($conn);
 }
 
-// Function cari
-function cari($cari)
-{
-    $sql = "SELECT * FROM karyawan WHERE nip LIKE '%$cari%' OR nama LIKE '%$cari%' OR gender LIKE '%$cari%' OR alamat LIKE '%$cari%' OR tempat_lahir LIKE '%$cari%' OR tgl_lahir LIKE '%$cari%'";
-    return queryData($sql);
-}
-
-
-// function register
-function register($data)
+// Function hapus
+function hapusMenu($id)
 {
     global $conn;
-    $username = strtolower(stripslashes($data["username"]));
-    $password = mysqli_real_escape_string($conn, $data['password']);
-    $confPass = mysqli_real_escape_string($conn, $data['confPass']);
-    $role = $data['role'];
-    $fotoDefault = $data['fotoDefault'];
-
-    // cek username sudah ada atau belum
-    $result = mysqli_query($conn, "SELECT username FROM users WHERE username = '$username'");
-    if (mysqli_fetch_assoc($result)) {
-        echo "<script>alert('Username sudah digunakan!')</script>";
-        return false;
-    }
-
-    // cek kesamaan password dan konfirmasi password
-    if ($password !== $confPass) {
-        echo "<script>alert('Password yang anda masukkan tidak sesuai!')</script>";
-        return false;
-    }
-
-    $password = password_hash($password, PASSWORD_DEFAULT);
-
-    // cek validasi foto
-    if ($_FILES['fotoProfile']['error'] === 4) {
-        $fotoProfile = $fotoDefault;
-    } else {
-        $fotoProfile = uploadFotoProfile();
-    }
-
-    $sql = "INSERT INTO users VALUES('', '$username', '$password', '$role', '$fotoProfile')";
-    mysqli_query($conn, $sql);
-    return mysqli_affected_rows($conn);
-}
-
-// Function upload foto
-function uploadFotoProfile()
-{
-    $namaFoto = $_FILES['fotoProfile']['name'];
-    $ukuranFoto = $_FILES['fotoProfile']['size'];
-    $penyimpanan = $_FILES['fotoProfile']['tmp_name'];
-    $error = $_FILES['fotoProfile']['error'];
-
-    // Cek foto sudah dipilih
-    if ($error === 4) {
-        echo "
-        <script>
-            alert('Pilih foto terlebih dahulu!');
-        </script>";
-        return false;
-    }
-
-    // cek kesesuaian ekstensi foto
-    $ekstensiFotoValid = ['jpg', 'jpeg', 'png'];
-    $pecahNamaFoto = explode('.', $namaFoto);
-    $ekstensiFoto = strtolower(end($pecahNamaFoto));
-    if (!in_array($ekstensiFoto, $ekstensiFotoValid)) {
-        echo "
-        <script>
-            alert('File/foto yang anda kirim tidak valid!');
-        </script>";
-        return false;
-    }
-
-    // cek ukuran foto
-    if ($ukuranFoto > 1000000) {
-        echo "
-        <script>
-            alert('Foto yang anda kirim melebihi batas ukuran!');
-        </script>";
-        return false;
-    }
-
-    // rubah ke nama baru
-    $namaFotoBaru = uniqid();
-    $namaFotoBaru .= '.';
-    $namaFotoBaru .= $ekstensiFoto;
-
-    move_uploaded_file($penyimpanan, 'fotoProfile/' . $namaFotoBaru);
-
-    return $namaFotoBaru;
-}
-
-// Function ubah foto profile
-function ubahProfile($data)
-{
-    global $conn;
-    $id = $data["id"];
-    $sqlAll = "SELECT * FROM users WHERE id = $id";
+    $sql = "DELETE FROM menus WHERE id = $id";
+    $sqlAll = "SELECT * FROM menus WHERE id = $id";
     $delFoto = mysqli_query($conn, $sqlAll);
     $execute = mysqli_fetch_assoc($delFoto);
-    // var_dump($execute['foto_profile']);
-    // die();
-    unlink("fotoProfile/" . $execute['foto_profile']);
-    $fotoBaru = uploadFotoProfile();
-    if (!$fotoBaru) {
-        return false;
-    }
-
-    $sql = "UPDATE users SET foto_profile = '$fotoBaru' WHERE id = $id";
+    unlink("../list_menu/" . $execute['foto']);
     mysqli_query($conn, $sql);
     return mysqli_affected_rows($conn);
 }
 
-// function hapus user
-function hapusUser($id)
+
+// ========== tambah barang ==========
+// Function tambah barang
+function createBarang($data)
 {
     global $conn;
-    $sql = "DELETE FROM users WHERE id = $id";
-    $sqlAll = "SELECT * FROM users WHERE id = $id";
-    $delFoto = mysqli_query($conn, $sqlAll);
-    $execute = mysqli_fetch_assoc($delFoto);
-    unlink("fotoProfile/" . $execute['foto_profile']);
+    $nama = htmlspecialchars($data['nama']);
+    $harga = htmlspecialchars($data['harga']);
+    $stok = htmlspecialchars($data['stok']);
+
+    $kode_barang = "BRG" . rand(100, 999);
+
+    $sql = "INSERT INTO barangs VALUES('', '$kode_barang', '$nama', '$harga', '$stok')";
+
+    mysqli_query($conn, $sql);
+
+    return mysqli_affected_rows($conn);
+}
+
+// Function update
+function updateBarang($data)
+{
+    global $conn;
+    $id = $data['id'];
+    $nama = htmlspecialchars($data['nama']);
+    $harga = htmlspecialchars($data['harga']);
+    $stok = htmlspecialchars($data['stok']);
+
+    $sql = "UPDATE barangs SET nama = '$nama', harga = '$harga', stok = '$stok' WHERE id = $id";
+
+    mysqli_query($conn, $sql);
+
+    return mysqli_affected_rows($conn);
+}
+
+// Function hapus
+function hapusBarang($id)
+{
+    global $conn;
+    $sql = "DELETE FROM barangs WHERE id = $id";
     mysqli_query($conn, $sql);
     return mysqli_affected_rows($conn);
 }
 
-// function cari user
-function cariUser($cariUser)
+// ========== Pemasukan ==========
+// Function hapus
+function hapusPemasukan($id)
 {
-    $sql = "SELECT * FROM users WHERE username LIKE '%$cariUser%' && role = 'user'";
-    return queryData($sql);
+    global $conn;
+    $sql = "DELETE FROM pemasukans WHERE id = $id";
+    mysqli_query($conn, $sql);
+    return mysqli_affected_rows($conn);
+}
+
+// ========== Transaksi ==========
+// Function tambah transaksi
+function createTransaksi($data)
+{
+    global $conn;
+    $tanggal_transaksi = htmlspecialchars($data['tanggal_transaksi']);
+
+    $jumlah_transaksi = 0;
+
+    $menus = queryData("SELECT * FROM menus");
+
+    foreach ($data['list_menu'] as $key => $value) {
+        $jumlah_transaksi += $menus[$key]['harga'] * $value;
+    }
+
+    $kode_transaksi = "TSK" . rand(100, 999);
+
+    $sql = "INSERT INTO transaksis VALUES('', '$kode_transaksi', '$jumlah_transaksi', '$tanggal_transaksi')";
+    mysqli_query($conn, $sql);
+
+    $transaksi = queryData("SELECT * FROM transaksis ORDER BY id DESC LIMIT 1");
+    $transaksi_id = $transaksi[0]['id'];
+
+    $sql_pemasukan = "INSERT INTO pemasukans VALUES('', '$transaksi_id', '$tanggal_transaksi', '$jumlah_transaksi')";
+    mysqli_query($conn, $sql_pemasukan);
+
+    return mysqli_affected_rows($conn);
+}
+
+// Function hapus
+function hapusTransaksi($id)
+{
+    global $conn;
+    $sql = "DELETE FROM transaksis WHERE id = $id";
+    $sql_pemasukan = "DELETE FROM pemasukans WHERE transaksi_id = $id";
+
+    mysqli_query($conn, $sql);
+    mysqli_query($conn, $sql_pemasukan);
+    return mysqli_affected_rows($conn);
+}
+
+// ========== Laba Rugi ==========
+// cetak laporan
+function cetakLaporan($data)
+{
+    global $conn;
+    $tahun = htmlspecialchars($data['tahun']);
+    $bulan = htmlspecialchars($data['bulan']);
+
+    $date = $tahun . "-" . $bulan;
+
+    $pemasukans = queryData("SELECT * FROM pemasukans WHERE tanggal_masuk LIKE '%$date%'");
+    $pengeluarans = queryData("SELECT * FROM pengeluarans WHERE tanggal_keluar LIKE '%$date%'");
+
+    $total_pemasukan = 0;
+    $total_pengeluaran = 0;
+
+    foreach ($pemasukans as $pemasukan) {
+        $total_pemasukan += $pemasukan['jumlah_masuk'];
+    }
+
+    foreach ($pengeluarans as $pengeluaran) {
+        $total_pengeluaran += $pengeluaran['jumlah_keluar'];
+    }
+
+    $laba_rugi = $total_pemasukan - $total_pengeluaran;
+    $deposito = $laba_rugi * 0.1;
+    $total_laba_rugi = $laba_rugi - $deposito;
+
+    $mpdf = new \Mpdf\Mpdf();
+    $html = '
+    <style>
+        
+    </style>
+    <h1 style="text-align: center;">Laporan Laba Rugi</h1>
+    <h3 style="text-align: center;">Warkop Cahya</h3>
+    <h4 style="text-align: center;">Periode ' . $bulan . ' ' . $tahun . '</h4>
+    <hr style="">
+    <p>Total Pemasukan : Rp. ' . number_format($total_pemasukan, 0, ',', '.') . '</p>
+    <p>Total Pengeluaran : Rp. ' . number_format($total_pengeluaran, 0, ',', '.') . '</p>
+    <p>Laba Rugi : Rp. ' . number_format($laba_rugi, 0, ',', '.') . '</p>
+    <p>Deposit : Rp. ' . number_format($deposito, 0, ',', '.') . '</p>
+    <p>Total Laba Rugi : Rp. ' . number_format($total_laba_rugi, 0, ',', '.') . '</p>
+    ';
+    $mpdf->WriteHTML($html);
+    $mpdf->Output();
 }
