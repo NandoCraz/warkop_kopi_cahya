@@ -179,19 +179,38 @@ $thisPage = 'transaksi';
                         </ol>
                     </nav>
 
-                    <form action="" method="post" enctype="multipart/form-data" class="mb-4">
+                    <form action="" method="post" enctype="multipart/form-data" class="mb-4 mt-4">
                         <div class="mb-3">
-                            <label for="list_menu" class="form-label">List Menu</label>
-                            <?php foreach ($menus as $menu) : ?>
-                                <div class="row">
-                                    <div class="col-4">
-                                        <span class="text-dark"><?= $menu['nama_menu'] ?> ( Rp. <?= number_format($menu['harga'], 2, ',', '.'); ?> )</span>
-                                    </div>
-                                    <div class="col-2">
-                                        <input type="number" class="form-control" id="list_menu" name="list_menu[]" value="0" min="0" required />
-                                    </div>
-                                </div>
-                            <?php endforeach ?>
+                            <h3 for="list_menu" class="form-label">List Menu</h3>
+
+                            <table id="table_id" class="table table-striped text-center display">
+                                <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Gambar</th>
+                                        <th>Nama Menu</th>
+                                        <th>Kategori</th>
+                                        <th>Harga</th>
+                                        <th>Jumlah Order</th>
+                                    </tr>
+                                </thead>
+                                <?php $no = 1; ?>
+                                <tbody>
+                                    <?php foreach ($menus as $menu) : ?>
+                                        <tr>
+                                            <td><?= $no; ?></td>
+                                            <td><img src="../list_menu/<?= $menu['foto'] ?>" width="120"></td>
+                                            <td><?= $menu['nama_menu'] ?></td>
+                                            <td><?= $menu['kategori'] ?></td>
+                                            <td>Rp. <?= number_format($menu['harga'], 2, ',', '.'); ?></td>
+                                            <td>
+                                                <input type="number" class="form-control" id="list_menu" name="list_menu[]" value="0" min="0" required />
+                                            </td>
+                                        </tr>
+                                        <?php $no++ ?>
+                                    <?php endforeach ?>
+                                </tbody>
+                            </table>
                         </div>
                         <div class="mb-3">
                             <label for="tanggal_transaksi" class="form-label">Tanggal Transaksi</label>
