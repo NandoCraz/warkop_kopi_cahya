@@ -122,14 +122,14 @@ function updatePengeluaran($data)
     if ($_FILES['foto']['error'] === 4) {
         $foto = $fotoLama;
     } else {
-        $sqlAll = "SELECT * FROM menus WHERE id = $id";
+        $sqlAll = "SELECT * FROM pengeluarans WHERE id = $id";
         $delFoto = mysqli_query($conn, $sqlAll);
         $execute = mysqli_fetch_assoc($delFoto);
-        unlink("../list_menu/" . $execute['foto']);
-        $foto = uploadFoto();
+        unlink("../pembayaran_pengeluaran/" . $execute['foto']);
+        $foto = uploadFotoBukti();
     }
 
-    $sql = "UPDATE pengeluarans SET tanggal_keluar = '$tanggal_keluar', jumlah_keluar = '$jumlah_keluar', foto = '$fotoLama' WHERE id = $id";
+    $sql = "UPDATE pengeluarans SET tanggal_keluar = '$tanggal_keluar', jumlah_keluar = '$jumlah_keluar', foto = '$foto' WHERE id = $id";
 
     mysqli_query($conn, $sql);
 
