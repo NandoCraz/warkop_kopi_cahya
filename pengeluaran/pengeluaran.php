@@ -23,7 +23,7 @@ $thisPage = 'pengeluaran';
     <meta name="description" content="" />
     <meta name="author" content="" />
 
-    <title>Warkop Cahya | Pengeluaran</title>
+    <title>Warkop Cahaya | Pengeluaran</title>
 
     <!-- Custom fonts for this template-->
     <link href="../assets_admin/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css" />
@@ -53,7 +53,7 @@ $thisPage = 'pengeluaran';
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="../index.php">
                 <div class="sidebar-brand-icon">
-                    Warkop Cahya
+                    Warkop Cahaya
                 </div>
             </a>
 
@@ -186,6 +186,7 @@ $thisPage = 'pengeluaran';
                                         <?php if ($_SESSION["login"]["role"] == 'admin') : ?>
                                             <a href="edit.php?id=<?= $pengeluaran['id']; ?>" class="btn btn-success btn-sm"><i class="fa-solid fa-pen-to-square"></i></a>
                                             <a href="hapus.php?id=<?= $pengeluaran['id']; ?>" onclick="return confirm('Yakin Hapus Pengeluaran?');" class="btn btn-danger btn-sm"><i class="fa-solid fa-trash"></i></a>
+                                            <a href="detail.php?id=<?= $pengeluaran['id']; ?>" class="btn btn-primary btn-sm"><i class="fa fa-eye" aria-hidden="true"></i></a>
                                         <?php endif ?>
                                     </td>
                                 </tr>
@@ -203,7 +204,7 @@ $thisPage = 'pengeluaran';
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Warkop Cahya</span>
+                        <span>Copyright &copy; Warkop Cahaya</span>
                     </div>
                 </div>
             </footer>

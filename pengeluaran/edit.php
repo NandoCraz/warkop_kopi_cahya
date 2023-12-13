@@ -45,7 +45,7 @@ $thisPage = 'index';
     <meta name="description" content="" />
     <meta name="author" content="" />
 
-    <title>Warkop Cahya | Pengeluaran</title>
+    <title>Warkop Cahaya | Pengeluaran</title>
 
     <!-- Custom fonts for this template-->
     <link href="../assets_admin/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css" />
@@ -75,7 +75,7 @@ $thisPage = 'index';
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="../index.php">
                 <div class="sidebar-brand-icon">
-                    Warkop Cahya
+                    Warkop Cahaya
                 </div>
             </a>
 
@@ -187,17 +187,19 @@ $thisPage = 'index';
 
                     <form action="" method="post" enctype="multipart/form-data" class="mb-4">
                         <input type="hidden" name="id" value="<?= $pengeluaran['id'] ?>">
-                        <div class="mb-3">
-                            <label for="keperluan" class="form-label">Keperluan</label>
-                            <input type="text" class="form-control" name="keperluan" id="keperluan" required autocomplete="off" value="<?= $pengeluaran['keperluan']; ?>">
-                        </div>
+                        <input type="hidden" name="fotoLama" value="<?= $pengeluaran['foto']; ?>">
                         <div class="mb-3">
                             <label for="tanggal_keluar" class="form-label">Tanggal Keluar</label>
                             <input type="date" class="form-control" id="tanggal_keluar" name="tanggal_keluar" required value="<?= $pengeluaran["tanggal_keluar"] ?>" />
                         </div>
                         <div class="mb-3">
-                            <label for="jumlah_keluar" class="form-label">Jumlah Keluar</label>
-                            <input type="number" class="form-control" name="jumlah_keluar" id="jumlah_keluar" required autocomplete="off" value="<?= $pengeluaran['jumlah_keluar']; ?>">
+                            <label for="jumlah_keluar" class="form-label">Jumlah Total Keluar</label>
+                            <input type="number" class="form-control" name="jumlah_keluar" id="jumlah_keluar" required autocomplete="off" value="<?= $pengeluaran['jumlah_keluar']; ?>" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label for="foto" class="form-label">Bukti Pembayaran Pengeluaran :</label>
+                            <img src="../pembayaran_pengeluaran/<?= $pengeluaran['foto']; ?>" width="120" class="ml-3 mb-3">
+                            <input class="form-control" type="file" name="foto" id="foto" autocomplete="off" required>
                         </div>
                         <div class="mt-3 float-end">
                             <button type="submit" name="submit" class="btn btn-dark mb-3">Ubah</button>
@@ -212,7 +214,7 @@ $thisPage = 'index';
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Warkop Cahya</span>
+                        <span>Copyright &copy; Warkop Cahaya</span>
                     </div>
                 </div>
             </footer>

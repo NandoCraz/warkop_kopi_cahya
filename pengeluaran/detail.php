@@ -2,13 +2,18 @@
 session_start();
 
 require '../middleware/auth.php';
-require '../config.php';
+require '../middleware/admin.php';
+require('../config.php');
+
+// tangkap id
+$id = $_GET['id'];
 
 $user = queryData("SELECT * FROM users WHERE id =" . $_SESSION['login']['id'])[0];
 
-$pemasukans = queryData('SELECT * FROM pemasukans');
+// query data karyawan
+$pengeluaran = queryData("SELECT * FROM pengeluarans WHERE id = $id")[0];
 
-$thisPage = 'pemasukan';
+$thisPage = 'index';
 
 ?>
 
@@ -69,13 +74,13 @@ $thisPage = 'pemasukan';
 
             <div class="sidebar-heading mt-3">Admin</div>
 
-            <li class="nav-item <?php if ($thisPage == 'pemasukan') echo "active" ?>">
+            <li class="nav-item">
                 <a class="nav-link" href="../pemasukan/pemasukan.php">
                     <i class="fa fa-line-chart" aria-hidden="true"></i>
                     <span>Pemasukan</span>
                 </a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item <?php if ($thisPage == 'pengeluaran') echo "active" ?>">
                 <a class="nav-link" href="../pengeluaran/pengeluaran.php">
                     <i class="fa fa-area-chart" aria-hidden="true"></i>
                     <span>Pengeluaran</span>
@@ -157,31 +162,25 @@ $thisPage = 'pemasukan';
                 <div class="container-fluid">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item active" aria-current="page">Pemasukan</li>
+                            <li class="breadcrumb-item"><a href="pengeluaran.php">Pengeluaran</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Detail</li>
                         </ol>
                     </nav>
 
-                    <table id="table_id" class="table table-striped text-center display">
-                        <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>Tanggal Pemasukan</th>
-                                <th>Jumlah Pemasukan</th>
-                            </tr>
-                        </thead>
-                        <?php $no = 1; ?>
-                        <tbody>
-                            <?php foreach ($pemasukans as $pemasukan) : ?>
-                                <tr>
-                                    <td><?= $no; ?></td>
-                                    <td><?= $pemasukan['tanggal_masuk'] ?></td>
-                                    <td>Rp. <?= number_format($pemasukan['jumlah_masuk'], 2, ',', '.'); ?></td>
-                                </tr>
-                                <?php $no++ ?>
-                            <?php endforeach ?>
-                        </tbody>
-
-                    </table>
+                    <form action="" method="post" enctype="multipart/form-data" class="mb-4">
+                        <div class="mb-3">
+                            <label for="tanggal_keluar" class="form-label">Tanggal Keluar</label>
+                            <input type="date" class="form-control" id="tanggal_keluar" name="tanggal_keluar" required value="<?= $pengeluaran["tanggal_keluar"] ?>" readonly disabled />
+                        </div>
+                        <div class="mb-3">
+                            <label for="jumlah_keluar" class="form-label">Jumlah Total Keluar</label>
+                            <input type="number" class="form-control" name="jumlah_keluar" id="jumlah_keluar" required autocomplete="off" value="<?= $pengeluaran['jumlah_keluar']; ?>" readonly disabled>
+                        </div>
+                        <div class="mb-3">
+                            <label for="foto" class="form-label">Bukti Pembayaran Pengeluaran :</label><br>
+                            <img src="../pembayaran_pengeluaran/<?= $pengeluaran['foto']; ?>" width="300" class="ml-3 mb-3">
+                        </div>
+                    </form>
                 </div>
                 <!-- /.container-fluid -->
             </div>

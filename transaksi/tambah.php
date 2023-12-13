@@ -6,7 +6,7 @@ require '../middleware/admin.php';
 require('../config.php');
 
 $user = queryData("SELECT * FROM users WHERE id =" . $_SESSION['login']['id'])[0];
-$menus = queryData("SELECT * FROM menus");
+$menus = queryData("SELECT * FROM menus INNER JOIN barangs ON menus.barang_id = barangs.id WHERE barangs.stok > 0");
 
 // cek submit sudah ditekan
 if (isset($_POST['submit'])) {
@@ -38,7 +38,7 @@ $thisPage = 'transaksi';
     <meta name="description" content="" />
     <meta name="author" content="" />
 
-    <title>Warkop Cahya | Transaksi</title>
+    <title>Warkop Cahaya | Transaksi</title>
 
     <!-- Custom fonts for this template-->
     <link href="../assets_admin/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css" />
@@ -69,7 +69,7 @@ $thisPage = 'transaksi';
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="../index.php">
                 <div class="sidebar-brand-icon">
-                    Warkop Cahya
+                    Warkop Cahaya
                 </div>
             </a>
 
@@ -191,6 +191,7 @@ $thisPage = 'transaksi';
                                         <th>Nama Menu</th>
                                         <th>Kategori</th>
                                         <th>Harga</th>
+                                        <th>Stok</th>
                                         <th>Jumlah Order</th>
                                     </tr>
                                 </thead>
@@ -203,8 +204,9 @@ $thisPage = 'transaksi';
                                             <td><?= $menu['nama_menu'] ?></td>
                                             <td><?= $menu['kategori'] ?></td>
                                             <td>Rp. <?= number_format($menu['harga'], 2, ',', '.'); ?></td>
+                                            <td><?= $menu['stok'] ?></td>
                                             <td>
-                                                <input type="number" class="form-control" id="list_menu" name="list_menu[]" value="0" min="0" required />
+                                                <input type="number" class="form-control" id="list_menu" name="list_menu[]" value="0" min="0" max="<?= $menu['stok'] ?>" required />
                                             </td>
                                         </tr>
                                         <?php $no++ ?>
@@ -230,7 +232,7 @@ $thisPage = 'transaksi';
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Warkop Cahya</span>
+                        <span>Copyright &copy; Warkop Cahaya</span>
                     </div>
                 </div>
             </footer>

@@ -40,7 +40,7 @@ $thisPage = 'dashboard';
     <meta name="description" content="" />
     <meta name="author" content="" />
 
-    <title>Warkop Cahya | Home</title>
+    <title>Warkop Cahaya | Home</title>
 
     <!-- Custom fonts for this template-->
     <link href="assets_admin/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css" />
@@ -70,7 +70,7 @@ $thisPage = 'dashboard';
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
                 <div class="sidebar-brand-icon">
-                    Warkop Cahya
+                    Warkop Cahaya
                 </div>
             </a>
 
@@ -290,7 +290,7 @@ $thisPage = 'dashboard';
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Warkop Cahya</span>
+                        <span>Copyright &copy; Warkop Cahaya</span>
                     </div>
                 </div>
             </footer>

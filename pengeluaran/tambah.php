@@ -6,6 +6,7 @@ require '../middleware/admin.php';
 require('../config.php');
 
 $user = queryData("SELECT * FROM users WHERE id =" . $_SESSION['login']['id'])[0];
+$barangs = queryData("SELECT * FROM barangs");
 
 // cek submit sudah ditekan
 if (isset($_POST['submit'])) {
@@ -38,7 +39,7 @@ $thisPage = 'pemasukan';
     <meta name="description" content="" />
     <meta name="author" content="" />
 
-    <title>Warkop Cahya | Pengeluaran</title>
+    <title>Warkop Cahaya | Pengeluaran</title>
 
     <!-- Custom fonts for this template-->
     <link href="../assets_admin/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css" />
@@ -68,7 +69,7 @@ $thisPage = 'pemasukan';
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="../index.php">
                 <div class="sidebar-brand-icon">
-                    Warkop Cahya
+                    Warkop Cahaya
                 </div>
             </a>
 
@@ -180,16 +181,50 @@ $thisPage = 'pemasukan';
 
                     <form action="" method="post" enctype="multipart/form-data" class="mb-4">
                         <div class="mb-3">
-                            <label for="keperluan" class="form-label">Keperluan</label>
-                            <input type="text" class="form-control" name="keperluan" id="keperluan" required autocomplete="off">
+                            <h3 class="form-label">List Barang</h3>
+
+                            <table id="table_id" class="table table-striped text-center display">
+                                <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Kode Barang</th>
+                                        <th>Nama Barang</th>
+                                        <th>Harga</th>
+                                        <th>Jumlah Tambah</th>
+                                    </tr>
+                                </thead>
+                                <?php $no = 1; ?>
+                                <tbody>
+                                    <?php foreach ($barangs as $barang) : ?>
+                                        <tr>
+                                            <td><?= $no; ?></td>
+                                            <td><?= $barang['kode_barang'] ?></td>
+                                            <td><?= $barang['nama'] ?></td>
+                                            <td>Rp. <?= number_format($barang['harga'], 2, ',', '.'); ?></td>
+                                            <td>
+                                                <input type="number" class="form-control" id="list_barang" name="list_barang[]" value="0" min="0" required />
+                                            </td>
+                                        </tr>
+                                        <?php $no++ ?>
+                                    <?php endforeach ?>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="mb-3">
+                            <label for="keperluan" class="form-label">Keperluan Lain</label>
+                            <input type="text" class="form-control" name="keperluan" id="keperluan" required autocomplete="off" placeholder="Jika Tidak Ada Ketik (-)">
                         </div>
                         <div class="mb-3">
                             <label for="tanggal_keluar" class="form-label">Tanggal Keluar</label>
                             <input type="date" class="form-control" id="tanggal_keluar" name="tanggal_keluar" required />
                         </div>
                         <div class="mb-3">
-                            <label for="jumlah_keluar" class="form-label">Jumlah Keluar</label>
-                            <input type="number" class="form-control" name="jumlah_keluar" id="jumlah_keluar" required autocomplete="off">
+                            <label for="jumlah_keluar" class="form-label">Jumlah Pengeluaran Lain</label>
+                            <input type="number" class="form-control" name="jumlah_keluar" min="0" value="0" id="jumlah_keluar" required autocomplete="off">
+                        </div>
+                        <div class="mb-3">
+                            <label for="foto" class="form-label">Bukti Pembayaran Pengeluaran</label>
+                            <input class="form-control" type="file" name="foto" id="foto" autocomplete="off" required>
                         </div>
                         <div class="mt-3 float-end">
                             <button type="reset" class="btn btn-secondary mb-3">Clear</button>
@@ -205,7 +240,7 @@ $thisPage = 'pemasukan';
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Warkop Cahya</span>
+                        <span>Copyright &copy; Warkop Cahaya</span>
                     </div>
                 </div>
             </footer>

@@ -22,7 +22,7 @@ $thisPage = 'menu';
     <meta name="description" content="" />
     <meta name="author" content="" />
 
-    <title>Warkop Cahya | List Menu</title>
+    <title>Warkop Cahaya | List Menu</title>
 
     <!-- Custom fonts for this template-->
     <link href="../assets_admin/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css" />
@@ -52,7 +52,7 @@ $thisPage = 'menu';
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="../index.php">
                 <div class="sidebar-brand-icon">
-                    Warkop Cahya
+                    Warkop Cahaya
                 </div>
             </a>
 

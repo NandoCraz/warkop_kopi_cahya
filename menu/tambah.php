@@ -6,6 +6,7 @@ require '../middleware/admin.php';
 require('../config.php');
 
 $user = queryData("SELECT * FROM users WHERE id =" . $_SESSION['login']['id'])[0];
+$barangs = queryData("SELECT * FROM barangs");
 
 // cek submit sudah ditekan
 if (isset($_POST['submit'])) {
@@ -38,7 +39,7 @@ $thisPage = 'menu';
     <meta name="description" content="" />
     <meta name="author" content="" />
 
-    <title>Warkop Cahya | List Menu</title>
+    <title>Warkop Cahaya | List Menu</title>
 
     <!-- Custom fonts for this template-->
     <link href="../assets_admin/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css" />
@@ -68,7 +69,7 @@ $thisPage = 'menu';
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="../index.php">
                 <div class="sidebar-brand-icon">
-                    Warkop Cahya
+                    Warkop Cahaya
                 </div>
             </a>
 
@@ -180,6 +181,16 @@ $thisPage = 'menu';
 
                     <form action="" method="post" enctype="multipart/form-data" class="mb-4">
                         <div class="mb-3">
+                            <label for="barang_id" class="form-label">Nama Barang</label>
+                            <select name="barang_id" class="custom-select" id="barang_id" required>
+                                <option disabled value="" selected>Pilih Barang</option>
+                                <?php foreach ($barangs as $barang) : ?>
+                                    <option value="<?= $barang['id'] ?>"><?= $barang['nama'] ?></option>
+                                <?php endforeach ?>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
                             <label for="nama_menu" class="form-label">Nama Menu</label>
                             <input type="text" class="form-control" name="nama_menu" id="nama_menu" required autocomplete="off">
                         </div>
@@ -213,7 +224,7 @@ $thisPage = 'menu';
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Warkop Cahya</span>
+                        <span>Copyright &copy; Warkop Cahaya</span>
                     </div>
                 </div>
             </footer>
@@ -305,7 +316,7 @@ $thisPage = 'menu';
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Warkop Cahya | Tambah List Menu</title>
+    <title>Warkop Cahaya | Tambah List Menu</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/9fcca3cd45.js" crossorigin="anonymous"></script>
