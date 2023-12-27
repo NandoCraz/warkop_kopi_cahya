@@ -33,30 +33,37 @@ function createPengeluaran($data)
     $keperluan = htmlspecialchars($data['keperluan']);
     $tanggal_keluar = htmlspecialchars($data['tanggal_keluar']);
     $jumlah_keluar = htmlspecialchars($data['jumlah_keluar']);
+    $jenis_keluar = htmlspecialchars($data['jenis_keluar']);
 
-    $jumlah_total_keluar = 0;
+    if ($jenis_keluar == 'barang') {
+        $jumlah_total_keluar = 0;
 
-    $barangs = queryData("SELECT * FROM barangs");
+        $barangs = queryData("SELECT * FROM barangs");
 
-    foreach ($data['list_barang'] as $key => $value) {
-        $jumlah_total_keluar += $barangs[$key]['harga'] * $value;
+        foreach ($data['list_barang'] as $key => $value) {
+            $jumlah_total_keluar += $barangs[$key]['harga'] * $value;
 
-        $barang = queryData("SELECT * FROM barangs WHERE id = " . $barangs[$key]['id']);
+            $barang = queryData("SELECT * FROM barangs WHERE id = " . $barangs[$key]['id']);
 
-        $stok = $barang[0]['stok'] + $value;
+            $stok = $barang[0]['stok'] + $value;
 
-        $sql = "UPDATE barangs SET stok = '$stok' WHERE id = " . $barangs[$key]['id'];
-        mysqli_query($conn, $sql);
+            $sql = "UPDATE barangs SET stok = '$stok' WHERE id = " . $barangs[$key]['id'];
+            mysqli_query($conn, $sql);
+        }
+
+        $hasil_keluar = $jumlah_total_keluar;
+        $pengeluaran_keperluan = 'Pembelian Stok Barang';
+    } else {
+        $hasil_keluar = $jumlah_keluar;
+        $pengeluaran_keperluan = $keperluan;
     }
-
-    $hasil_keluar = $jumlah_total_keluar + $jumlah_keluar;
 
     $foto = uploadFotoBukti();
     if (!$foto) {
         return false;
     }
 
-    $sql = "INSERT INTO pengeluarans VALUES('','$keperluan', '$tanggal_keluar', '$hasil_keluar', '$foto')";
+    $sql = "INSERT INTO pengeluarans VALUES('','$pengeluaran_keperluan', '$tanggal_keluar', '$hasil_keluar', '$foto')";
 
     mysqli_query($conn, $sql);
 

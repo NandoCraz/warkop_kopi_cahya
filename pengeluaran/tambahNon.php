@@ -2,14 +2,30 @@
 session_start();
 
 require '../middleware/auth.php';
-require '../config.php';
+require '../middleware/admin.php';
+require('../config.php');
 
-// $users = queryData("SELECT * FROM users WHERE id =" . $_SESSION['login']['id']);
 $user = queryData("SELECT * FROM users WHERE id =" . $_SESSION['login']['id'])[0];
+$barangs = queryData("SELECT * FROM barangs");
 
-$pengeluarans = queryData('SELECT * FROM pengeluarans');
+// cek submit sudah ditekan
+if (isset($_POST['submit'])) {
+    if (createPengeluaran($_POST) > 0) {
+        echo "
+        <script>
+            alert('Data berhasil ditambahkan');
+            document.location.href = 'pengeluaran.php';
+        </script>";
+    } else {
+        echo "
+        <script>
+            alert('Data gagal ditambahkan');
+            document.location.href = 'tambah.php';
+        </script>";
+    }
+};
 
-$thisPage = 'pengeluaran';
+$thisPage = 'pemasukan';
 
 ?>
 
@@ -158,44 +174,34 @@ $thisPage = 'pengeluaran';
                 <div class="container-fluid">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item active" aria-current="page">Pengeluaran</li>
+                            <li class="breadcrumb-item"><a href="pengeluaran.php">Pengeluaran</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Tambah Pengeluaran Lain</li>
                         </ol>
                     </nav>
 
-                    <a href="tambah.php" class="btn btn-primary float-start my-4"><i class="fa-solid fa-plus"></i> Tambah Pengeluaran Barang</a>
-                    <a href="tambahNon.php" class="btn btn-success float-start my-4"><i class="fa-solid fa-plus"></i> Tambah Pengeluaran Lain</a>
-
-                    <table id="table_id" class="table table-striped text-center display">
-                        <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>Keperluan</th>
-                                <th>Tanggal Pengeluaran</th>
-                                <th>Jumlah Pengeluaran</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
-                        <?php $no = 1; ?>
-                        <tbody>
-                            <?php foreach ($pengeluarans as $pengeluaran) : ?>
-                                <tr>
-                                    <td><?= $no; ?></td>
-                                    <td><?= $pengeluaran['keperluan'] ?></td>
-                                    <td><?= $pengeluaran['tanggal_keluar'] ?></td>
-                                    <td>Rp. <?= number_format($pengeluaran['jumlah_keluar'], 2, ',', '.'); ?></td>
-                                    <td>
-                                        <?php if ($_SESSION["login"]["role"] == 'admin') : ?>
-                                            <a href="edit.php?id=<?= $pengeluaran['id']; ?>" class="btn btn-success btn-sm"><i class="fa-solid fa-pen-to-square"></i></a>
-                                            <a href="hapus.php?id=<?= $pengeluaran['id']; ?>" onclick="return confirm('Yakin Hapus Pengeluaran?');" class="btn btn-danger btn-sm"><i class="fa-solid fa-trash"></i></a>
-                                            <a href="detail.php?id=<?= $pengeluaran['id']; ?>" class="btn btn-primary btn-sm"><i class="fa fa-eye" aria-hidden="true"></i></a>
-                                        <?php endif ?>
-                                    </td>
-                                </tr>
-                                <?php $no++ ?>
-                            <?php endforeach ?>
-                        </tbody>
-
-                    </table>
+                    <form action="" method="post" enctype="multipart/form-data" class="mb-4">
+                        <input type="hidden" name="jenis_keluar" value="non_barang">
+                        <div class="mb-3">
+                            <label for="keperluan" class="form-label">Keperluan</label>
+                            <input type="text" class="form-control" name="keperluan" id="keperluan" required autocomplete="off" placeholder="Masukkan keperluan">
+                        </div>
+                        <div class="mb-3">
+                            <label for="tanggal_keluar" class="form-label">Tanggal Keluar</label>
+                            <input type="date" class="form-control" id="tanggal_keluar" name="tanggal_keluar" required />
+                        </div>
+                        <div class="mb-3">
+                            <label for="jumlah_keluar" class="form-label">Jumlah Pengeluaran</label>
+                            <input type="number" class="form-control" name="jumlah_keluar" min="0" value="0" id="jumlah_keluar" required autocomplete="off">
+                        </div>
+                        <div class="mb-3">
+                            <label for="foto" class="form-label">Bukti Pembayaran Pengeluaran</label>
+                            <input class="form-control" type="file" name="foto" id="foto" autocomplete="off" required>
+                        </div>
+                        <div class="mt-3 float-end">
+                            <button type="reset" class="btn btn-secondary mb-3">Clear</button>
+                            <button type="submit" name="submit" class="btn btn-dark mb-3">Tambah</button>
+                        </div>
+                    </form>
                 </div>
                 <!-- /.container-fluid -->
             </div>

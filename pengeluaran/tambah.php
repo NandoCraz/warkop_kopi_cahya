@@ -175,11 +175,12 @@ $thisPage = 'pemasukan';
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="pengeluaran.php">Pengeluaran</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Tambah</li>
+                            <li class="breadcrumb-item active" aria-current="page">Tambah Pengeluaran Barang</li>
                         </ol>
                     </nav>
 
                     <form action="" method="post" enctype="multipart/form-data" class="mb-4">
+                        <input type="hidden" name="jenis_keluar" value="barang">
                         <div class="mb-3">
                             <h3 class="form-label">List Barang</h3>
 
@@ -211,16 +212,8 @@ $thisPage = 'pemasukan';
                             </table>
                         </div>
                         <div class="mb-3">
-                            <label for="keperluan" class="form-label">Keperluan Lain</label>
-                            <input type="text" class="form-control" name="keperluan" id="keperluan" required autocomplete="off" placeholder="Jika Tidak Ada Ketik (-)">
-                        </div>
-                        <div class="mb-3">
                             <label for="tanggal_keluar" class="form-label">Tanggal Keluar</label>
                             <input type="date" class="form-control" id="tanggal_keluar" name="tanggal_keluar" required />
-                        </div>
-                        <div class="mb-3">
-                            <label for="jumlah_keluar" class="form-label">Jumlah Pengeluaran Lain</label>
-                            <input type="number" class="form-control" name="jumlah_keluar" min="0" value="0" id="jumlah_keluar" required autocomplete="off">
                         </div>
                         <div class="mb-3">
                             <label for="foto" class="form-label">Bukti Pembayaran Pengeluaran</label>
